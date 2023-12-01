@@ -1,0 +1,56 @@
+name: aoc2023
+version: 0.1.0.0
+github: "jedesroches/aoc2023"
+license: BSD-3-Clause
+author: "Joachim Desroches"
+maintainer: "nope@no-email.com"
+copyright: "2023 Joachim Desroches"
+description: "Advent of Code 2023"
+
+extra-source-files:
+- README.md
+
+dependencies:
+  - base >= 4.7 && < 5
+  - extra
+  - regex-applicative
+
+ghc-options:
+  - -Weverything
+  - -Wno-prepositive-qualified-module
+  - -Wno-unsafe
+  - -Wno-safe
+  - -Wno-implicit-prelude
+  - -Wno-missing-safe-haskell-mode
+  - -Wno-unused-packages
+  - -Wno-missing-deriving-strategies
+  - -Wno-missing-kind-signatures
+  - -Wno-type-defaults
+  - -Wno-all-missed-specialisations
+  - -Wno-missing-import-lists
+  - -Wno-missing-export-lists
+
+library:
+  source-dirs: src
+
+executables:
+  aoc2023-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - aoc2023
+
+tests:
+  aoc2023-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - aoc2023

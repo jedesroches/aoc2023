@@ -1,0 +1,4 @@
+# Configuration for stack, the build system
+resolver: lts-21.22
+packages:
+- .
