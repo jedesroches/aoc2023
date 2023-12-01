@@ -1,27 +1,31 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Day1 where
 
-import Data.Char (isDigit)
-import Data.Functor
-import Data.Maybe
-import Data.Tuple.Extra
+import Protolude
+
+import Data.Tuple.Extra (snd3)
+import Data.String (String)
 import Text.Regex.Applicative
 
-puzzle1 :: [String] -> Integer
-puzzle1 = sum . map (firstAndLast . filter isDigit)
+puzzle1 :: (Num i, Read i) => [String] -> Maybe i
+puzzle1 = fmap sum . mapM (firstAndLastOfList . filter isDigit)
 
-puzzle2 :: [String] -> Integer
-puzzle2 = sum . map (\xs -> read [findFirst xs, findLast xs])
+puzzle2 :: (Num i, Read i) => [String] -> Maybe i
+puzzle2 = fmap sum . mapM firstAndLastTextDigit
 
-firstAndLast :: [Char] -> Integer
-firstAndLast xs = read [head xs, last xs]
+firstAndLastOfList :: (Read i) => String -> Maybe i
+firstAndLastOfList xs = sequence [headMay xs, lastMay xs] >>= readMaybe
 
-findFirst :: String -> Char
-findFirst = snd3 . fromJust . findFirstInfix textDigit
+firstAndLastTextDigit :: (Read i) => String -> Maybe i
+firstAndLastTextDigit xs = sequence [findFirst xs, findLast xs] >>= readMaybe
 
-findLast :: String -> Char
-findLast = snd3 . fromJust . findFirstInfix (many anySym *> textDigit)
+findFirst :: String -> Maybe Char
+findFirst = fmap snd3 . findFirstInfix textDigit
+
+findLast :: String -> Maybe Char
+findLast = fmap snd3 . findFirstInfix (many anySym *> textDigit)
 
 textDigit :: RE Char Char
 textDigit = ("one" <|> "1") $> '1'

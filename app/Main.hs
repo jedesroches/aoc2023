@@ -1,6 +1,10 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Main (main) where
 
-import Lib
+import Protolude
+import Adventlib
+
 import Day1
 
 main :: IO ()

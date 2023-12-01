@@ -12,8 +12,11 @@ extra-source-files:
 
 dependencies:
   - base >= 4.7 && < 5
+  - protolude
   - extra
   - regex-applicative
+  - regex-applicative-text
+  - hspec
 
 ghc-options:
   - -Weverything
