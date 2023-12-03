@@ -1,7 +1,7 @@
 module Adventlib
-    ( runOnLines
-    ) where
-
+  ( runOnLines,
+  )
+where
 
 -- Useful stuff
 runOnLines :: (Show r) => ([String] -> r) -> IO ()

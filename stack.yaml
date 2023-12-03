@@ -1,4 +1,5 @@
 # Configuration for stack, the build system
-resolver: lts-21.22
+resolver: lts-21.21
 packages:
 - .
+system-ghc: true
