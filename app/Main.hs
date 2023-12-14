@@ -1,11 +1,7 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-
 module Main (main) where
 
-import Protolude
 import Adventlib
-
-import Day1
+import Day8
 
 main :: IO ()
-main = runOnLines puzzle2
+main = runOnFile puzzle2
