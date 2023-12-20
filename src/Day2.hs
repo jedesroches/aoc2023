@@ -44,6 +44,11 @@ newtype GameId = GameId Integer
 
 type MaxColorInformation = (Maybe Red, Maybe Green, Maybe Blue)
 
+data Game = Game
+  { _gameId   :: !GameId
+  , _maxCubes :: !MaxColorInformation
+  } deriving (Show, Eq)
+
 
 sumOfPossibleGames :: [Game] -> Integer
 sumOfPossibleGames = sum . mapMaybe gameValueIfPossible
@@ -56,14 +61,6 @@ gameValueIfPossible (Game (GameId gid) (red, green, blue)) =
   if (fromMaybe 0 red <= 12) && (fromMaybe 0 green <= 13) && (fromMaybe 0 blue <= 14)
   then Just gid
   else Nothing
-
-data Game = Game
-  { _gameId   :: !GameId
-  , _maxCubes :: !MaxColorInformation
-  } deriving (Show, Eq)
-
-parseGame :: RE Char Game
-parseGame = Game <$> ("Game " *> (GameId <$> decimal <* ": ")) <*> (maxColors <$> parseDraws)
 
 maxColors :: [[Color]] -> MaxColorInformation
 maxColors = foldl' maxForDraw (Nothing, Nothing, Nothing)
@@ -80,6 +77,9 @@ maxColors = foldl' maxForDraw (Nothing, Nothing, Nothing)
         writeIfMax (r, Nothing, b) (G green) = (r, Just green, b)
 
         writeIfMax currentMax _ = currentMax
+
+parseGame :: RE Char Game
+parseGame = Game <$> ("Game " *> (GameId <$> decimal <* ": ")) <*> (maxColors <$> parseDraws)
 
 parseDraws :: RE Char [[Color]]
 parseDraws = parseDraw `sepBy` "; "

@@ -14,7 +14,7 @@ import Text.Regex.Applicative.Common
 import Data.Maybe
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Monoid
-import Data.List (sort, group)
+import Data.List (sort)
 
 puzzle1 :: [String] -> Integer
 puzzle1 = getSum . foldMap idxTimesBid . zip [1..] . sort . parseIt
@@ -71,14 +71,14 @@ handType (c1, c2, c3, c4, c5) =
           | length x == 1 || length x == 4 -> FourSame
           | otherwise -> FullHouse
         x :| [y, z]
-          | (length x == 1 && (length y == 1 || length z == 1)) || (length y == 1 && length z == 1) -> ThreeSame
+          | lengthsOr3 x y z 1 1 3 -> ThreeSame
           | otherwise -> TwoPairs
         _ :| [_, _, _] -> OnePair
         _ -> HighCard
 
 handType2 :: HandOfCards Card2 -> HandType
 handType2 (c1, c2, c3, c4, c5) =
-  let groupedHand = group . sort . filter (/= J2) $ [c1, c2, c3, c4, c5]
+  let groupedHand = NE.group . sort . filter (/= J2) $ [c1, c2, c3, c4, c5]
   in case groupedHand of
     [] -> FiveSame
     [_] -> FiveSame -- only one equality group after filtering the J
@@ -97,12 +97,12 @@ handType2 (c1, c2, c3, c4, c5) =
     [_, _, _, _] -> OnePair
     _ -> HighCard
 
-lengthsOr :: [a] -> [b] -> Int -> Int -> Bool
+lengthsOr :: NonEmpty a -> NonEmpty b -> Int -> Int -> Bool
 lengthsOr x y r1 r2 = let x' = length x
                           y' = length y
                       in (x' == r1 && y' == r2) || (y' == r1 && x' == r2)
 
-lengthsOr3 :: [a] -> [b] -> [c] -> Int -> Int -> Int -> Bool
+lengthsOr3 :: NonEmpty a -> NonEmpty b -> NonEmpty c -> Int -> Int -> Int -> Bool
 lengthsOr3 x y z r1 r2 r3 = let x' = length x
                                 y' = length y
                                 z' = length z
